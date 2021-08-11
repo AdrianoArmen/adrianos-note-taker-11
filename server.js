@@ -21,10 +21,11 @@ app.get("/notes", (req, res) =>
 );
 
 // retrieve all note characters
+// https://expressjs.com/en/guide/routing.html
 app.get("/api/notes", (req, res) => {
   try {
     const data = fs.readFileSync(path.join(__dirname, "/db/db.json"), "utf8");
-    res.json(data);
+    res.send(data);
     console.log(data);
   } catch (err) {
     console.error(err);
