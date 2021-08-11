@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// static files added to get rdata from public dir
+// https://expressjs.com/en/starter/static-files.html
+app.use(express.static(path.join(__dirname, "public")));
 
 // routing
 app.get("/notes", (req, res) =>
@@ -40,19 +43,17 @@ app.post("/api/notes", (req, res) => {
     //   preData before processing
     let preData = fs.readFileSync(path.join(__dirname, "/db/db.json"), "utf8");
     let noteArray = JSON.parse(preData);
-    console.log(noteArray);
-    noteArray.push(newNote);
-    console.log(newNote);
 
-    
+    noteArray.push(newNote);
+
     const dataBaseFile = path.join(__dirname, "/db/db.json");
     fs.writeFileSync(dataBaseFile, JSON.stringify(noteArray));
-    res.json(noteArray);
+    res.json(newNote);
   } catch (err) {
     console.error(err);
   }
 
-//   changes to be pushed into array
+  //   changes to be pushed into array
 });
 
 // server init
