@@ -53,9 +53,31 @@ app.post("/api/notes", (req, res) => {
   } catch (err) {
     console.error(err);
   }
-
-  //   changes to be pushed into array
 });
 
-// server init
+// delete note functionality
+app.delete("/api/notes/:id", (req, res) => {
+  const id = req.params.id;
+  let preData = fs.readFileSync(path.join(__dirname, "/db/db.json"), "utf8");
+  let noteArray = JSON.parse(preData);
+  if (noteArray.length > 0) {
+    // .some method to match id
+    const search = noteArray.some((note) => note.id === id);
+    if (search) {
+      newNoteArray = noteArray.filter((note) => note.id !== id);
+      const dataBaseFile = path.join(__dirname, "/db/db.json");
+      fs.writeFileSync(dataBaseFile, JSON.stringify(newNoteArray));
+      console.log(`Delete Note`);
+      res.json(newNoteArray);
+    } else {
+      console.log(`Note Not Found`);
+      res.json(`Note Not Found`);
+    }
+  } else {
+    console.log(`No Data Stored`);
+    res.json(`No Data Stored`);
+  }
+});
+
+// server init display listening port
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
