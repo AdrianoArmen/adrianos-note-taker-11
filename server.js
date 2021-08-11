@@ -38,12 +38,13 @@ app.get("*", (req, res) =>
 // new note building - body parsing middleware
 app.post("/api/notes", (req, res) => {
   const newNote = req.body;
+  newNote.id = uuidv4();
 
   try {
     //   preData before processing
     let preData = fs.readFileSync(path.join(__dirname, "/db/db.json"), "utf8");
     let noteArray = JSON.parse(preData);
-
+    let uuid = uuidv4();
     noteArray.push(newNote);
 
     const dataBaseFile = path.join(__dirname, "/db/db.json");
