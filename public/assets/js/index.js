@@ -34,7 +34,7 @@ const getNotes = () =>
   })
   // catch error from response
     .then((response) => response)
-    console.log(data)
+    
     .catch((error) => {
       console.error(error);
     });

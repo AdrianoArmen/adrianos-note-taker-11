@@ -26,7 +26,6 @@ app.get("/api/notes", (req, res) => {
   try {
     const data = fs.readFileSync(path.join(__dirname, "/db/db.json"), "utf8");
     res.send(data);
-    console.log(data);
   } catch (err) {
     console.error(err);
   }
