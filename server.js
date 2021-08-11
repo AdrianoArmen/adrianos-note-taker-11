@@ -32,5 +32,28 @@ app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "/public/index.html"))
 );
 
+// new note building - body parsing middleware
+app.post("/api/notes", (req, res) => {
+  const newNote = req.body;
+
+  try {
+    //   preData before processing
+    let preData = fs.readFileSync(path.join(__dirname, "/db/db.json"), "utf8");
+    let noteArray = JSON.parse(preData);
+    console.log(noteArray);
+    noteArray.push(newNote);
+    console.log(newNote);
+
+    
+    const dataBaseFile = path.join(__dirname, "/db/db.json");
+    fs.writeFileSync(dataBaseFile, JSON.stringify(noteArray));
+    res.json(noteArray);
+  } catch (err) {
+    console.error(err);
+  }
+
+//   changes to be pushed into array
+});
+
 // server init
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
