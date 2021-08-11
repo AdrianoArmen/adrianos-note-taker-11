@@ -9,9 +9,28 @@ const { v4: uuidv4 } = require("uuid");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
+// routing
+app.get("/notes", (req, res) =>
+  res.sendFile(path.join(__dirname, "/public/notes.html"))
+);
 
+// retrieve all note characters
+app.get("/api/notes", (req, res) => {
+  try {
+    const data = fs.readFileSync(path.join(__dirname, "/db/db.json"), "utf8");
+    res.json(data);
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+});
 
-app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`))
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "/public/index.html"))
+);
+
+// server init
+app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
